@@ -69,3 +69,20 @@ Remove-File -Path 'C:\Users\Public\Desktop\GeoGraphix Seismic Modeling.lnk'
 ##***To Create a shortcut***
 
 C:\PS>New-Shortcut -Path "$envProgramData\Microsoft\Windows\Start Menu\My Shortcut.lnk" -TargetPath "$envWinDir\system32\notepad.exe" -IconLocation "$envWinDir\system32\notepad.exe" -Description 'Notepad' -WorkingDirectory "$envHomeDrive\$envHomePath"
+
+
+#Create Active Setup to Update User Settings
+
+Copy-File -Path "$dirSupportFiles\LyncUserSettings.cmd" -Destination "$envWindir\Installer\LyncUserSettings.cmd"
+    Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "" -Value "{90150000-012B-0409-0000-0000000FF1CE}" -Type String
+    Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "ComponentID" -Value "{90150000-012B-0409-0000-0000000FF1CE}" -Type String
+    Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "Version" -Value "15,0,4420,1017" -Type String
+    Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "StubPath" -Value "$envWindir\Installer\LyncUserSettings.cmd" -Type String
+    Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "Locale" -Value "EN" -Type String
+Contents of "LyncUserSettings.cmd" 
+
+REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v TwoLineView /t REG_DWORD /d 0 /f
+REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v ShowPhoto /t REG_DWORD /d 0 /f
+REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v ShowFavoriteContacts /t REG_DWORD /d 0 /f
+REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v MinimizeWindowToNotificationArea /t REG_DWORD /d 1 /f
+REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v AutoOpenMainWindowWhenStartup /t REG_DWORD /d 0 /f
