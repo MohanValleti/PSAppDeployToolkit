@@ -87,8 +87,7 @@ Remove-File -Path '$envCommonDesktop\GeoGraphix Seismic Modeling.lnk'
 | % { Remove-Folder -Path "$_" }
 
 ## Remove a bunch of specific folders, only if they're empty
-<# If you re-use this snippit, you'll need to put the folders into the below list
-in the "deepest folder level" to "most shallow folder level" order e.g.
+<# Use this by specifying folders from "deepest folder level" to "most shallow folder level" order e.g.
 c:\program files\vendor\app\v12\junk - then 
 c:\program files\vendor\app\v12 - then
 c:\program files\vendor\app - then
@@ -96,14 +95,17 @@ c:\program files\vendor
 
 using the above example, it will only remove c:\program files\vendor if every other folder above is completely empty. 
 if for example v11 was also installed, it would stop prior #>
-( 
-    "$envSystemDrive\12d",
-    "$envProgramFiles\12d\12dmodel",
-    "$envProgramFiles\12d",
-    "$envProgramFilesX86\12d\Nodes",
-    "$envProgramFilesX86\12d"
+(
+    "$envProgramFiles\vendor\app\v12\junk",
+    "$envProgramFiles\vendor\app\v12",
+    "$envProgramFiles\vendor\app",
+    "$envProgramFiles\vendor",
+    "$envProgramFilesX86\vendor\app\v12\junk",
+    "$envProgramFilesX86\vendor\app\v12",
+    "$envProgramFilesX86\vendor\app",
+    "$envProgramFilesX86\vendor" <# careful not to include the comma after the double quotes in this one #>
 ) | % { if (!(Test-Path -Path "$_\*")) { Remove-Folder -Path "$_" } }
-    # for each piped item, if NOT (the folder specified has contents (*)), remove the folder 
+    # for each piped item, if the folder specified DOES NOT have contents ($folder\*), remove the folder 
 
 ## Import a certificate to system 'Trusted Publishers' store.. helpful for clickOnce installers 
 # (for references sake, I saved as base64, unsure if DER encoded certs work)
@@ -146,7 +148,6 @@ Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\
 Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "StubPath" -Value "$envWindir\Installer\LyncUserSettings.cmd" -Type String
 Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "Locale" -Value "EN" -Type String
 #for reference, I've included the LyncUserSettings.cmd file as a springboard in this gist 
-
 
 ## function to assist finding uninstall strings, msi codes, display names of installed applications
 # paste into powershell window (or save in (powershell profile)[http://www.howtogeek.com/50236/customizing-your-powershell-profile/]
