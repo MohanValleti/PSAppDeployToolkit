@@ -8,20 +8,21 @@ $envUserDesktop     # c:\Users\{user currently logged in}\Desktop
 $envSystemDrive     # c:
 $envSystemRoot      # c:\windows
 
+## How to load ("dotsource") PSADT functions/variables for manual testing (your powershell window must be run as administrator first)
+cd "$path_to_PSADT_folder_youre_working_from"
+. .\AppDeployToolkit\AppDeployToolkitMain.ps1
+
 ## *** Examples of exe install***
 Execute-Process -Path '<application>.exe' -Parameters '/quiet' -WindowStyle Hidden
 Execute-Process -Path "$dirFiles\DirectX\DXSetup.exe" -Parameters '/silent' -WindowStyle 'Hidden'
-Execute-Process -Path 'uninstall_flash_player.exe' -Parameters '/uninstall' -WindowStyle Hidden
-
-## ** Execute an .exe, and hide confidential parameters from log file **
+#Execute an .exe, and hide confidential parameters from log file
 $serialisation_params = '-batchmode -quit -serial <aa-bb-cc-dd-ee-ffff11111> -username "<serialisation username>" -password "SuperSecret123"'
 Execute-Process -Path "$envProgramFiles\Application\Serialise.exe" -Parameters "$serialisation_params" -SecureParameters:$True
 
 ##***Example to install an msi***
 Execute-MSI -Action 'Install' -Path '$dirFiles\<application>.msi'
 Execute-MSI -Action 'Install' -Path 'Discovery 2015.1.msi'
-
-## Install the base MSI and apply a transform
+#MSI install + transform file
 Execute-MSI -Action 'Install' -Path 'Adobe_Reader_11.0.0_EN.msi' -Transform 'Adobe_Reader_11.0.0_EN_01.mst'
 
 ## Install a patch
@@ -30,7 +31,7 @@ Execute-MSI -Action 'Patch' -Path 'Adobe_Reader_11.0.3_EN.msp'
 ## To uninstall an MSI
 Execute-MSI -Action Uninstall -Path '{5708517C-59A3-45C6-9727-6C06C8595AFD}'
 
-## Uninstall a number of msi codes, careful that the last item does not have a comma
+## Uninstall a number of msi codes
 "{2E873893-A883-4C06-8308-7B491D58F3D6}", <# Example #>`
 "{2E873893-A883-4C06-8308-7B491D58F3D6}", <# Example #>`
 "{2E873893-A883-4C06-8308-7B491D58F3D6}", <# Example #>`
@@ -38,7 +39,6 @@ Execute-MSI -Action Uninstall -Path '{5708517C-59A3-45C6-9727-6C06C8595AFD}'
 "{2E873893-A883-4C06-8308-7B491D58F3D6}", <# Example #>`
 "{B234DC00-1003-47E7-8111-230AA9E6BF10}" <# Last example cannot have a comma after the double quotes #>`
 | % { Execute-MSI -Action 'Uninstall' -Path "$_" } <# foreach item, uninstall #>
-
 
 ## ***Run a vbscript***
 Execute-Process -Path "cscript.exe" -Parameters "$dirFiles\whatever.vbs"
@@ -85,10 +85,15 @@ Remove-File -Path '$envCommonDesktop\GeoGraphix Seismic Modeling.lnk'
 | % { Remove-Folder -Path "$_" }
 
 ## Remove a bunch of specific folders, only if they're empty
-# If you re-use this snippit, you'll need to put the folders into the below list
-# in the "deepest folder level" to "most shallow folder level" order
-# for eg, order it c:\program files\vendor\app\v12\junk, then c:\program files\vendor\app\v12, then c:\program files\vendor\app, then c:\program files\vendor
-# using the above example, it will only remove c:\program files\vendor if every other folder above is completely empty. if for example v11 was also installed, it would stop prior
+<# If you re-use this snippit, you'll need to put the folders into the below list
+in the "deepest folder level" to "most shallow folder level" order e.g.
+c:\program files\vendor\app\v12\junk - then 
+c:\program files\vendor\app\v12 - then
+c:\program files\vendor\app - then
+c:\program files\vendor
+
+using the above example, it will only remove c:\program files\vendor if every other folder above is completely empty. 
+if for example v11 was also installed, it would stop prior #>
 ( 
     "$envSystemDrive\12d",
     "$envProgramFiles\12d\12dmodel",
@@ -96,9 +101,10 @@ Remove-File -Path '$envCommonDesktop\GeoGraphix Seismic Modeling.lnk'
     "$envProgramFilesX86\12d\Nodes",
     "$envProgramFilesX86\12d"
 ) | % { if (!(Test-Path -Path "$_\*")) { Remove-Folder -Path "$_" } }
-    # for each fed item, if NOT (the folder specified has contents (*)), remove the folder 
+    # for each piped item, if NOT (the folder specified has contents (*)), remove the folder 
 
-## Import a certificate to system 'Trusted Publishers' store.. helpful for clickOnce installers (for references sake, I saved as base64, unsure if DER encoded certs work)
+## Import a certificate to system 'Trusted Publishers' store.. helpful for clickOnce installers 
+# (for references sake, I saved as base64, unsure if DER encoded certs work)
 Execute-Process -Path "certutil.exe" -Parameters "-f -addstore -enterprise TrustedPublisher `"$dirFiles\certname.cer`""
 Write-Log -Message "Imported Cert" -Source $deployAppScriptFriendlyName	
 
@@ -109,6 +115,19 @@ New-Shortcut -Path "$envCommonPrograms\My Shortcut.lnk" `
     -Description 'Notepad' `
     -WorkingDirectory "$envHomeDrive\$envHomePath"
 
+## Modify ACL on a file
+#first load the ACL
+$acl_to_modify = "$envProgramData\Example\File.txt"
+$acl = Get-Acl "$acl_to_modify"
+#add another entry to the ACL list (in this case, add all users to have full control)
+$ar = New-Object System.Security.AccessControl.FileSystemAccessRule("BUILTIN\Users", "FullControl", "None", "None", "Allow")
+$acl.SetAccessRule($ar)
+#re-write the acl on the target file
+Set-Acl "$acl_to_modify" $acl
+
+## Modify ACL on a folder
+
+#TODO
 
 ##Create Active Setup to Update User Settings
 #1
@@ -124,15 +143,12 @@ Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\
 Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "Version" -Value "15,0,4420,1017" -Type String
 Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "StubPath" -Value "$envWindir\Installer\LyncUserSettings.cmd" -Type String
 Set-RegistryKey -Key "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{90150000-012B-0409-0000-0000000FF1CE}" -Name "Locale" -Value "EN" -Type String
-#for reference, Contents of "LyncUserSettings.cmd" above ^^ 
-REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v TwoLineView /t REG_DWORD /d 0 /f
-REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v ShowPhoto /t REG_DWORD /d 0 /f
-REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v ShowFavoriteContacts /t REG_DWORD /d 0 /f
-REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v MinimizeWindowToNotificationArea /t REG_DWORD /d 1 /f
-REG ADD "HKCU\Software\Microsoft\Office\15.0\Lync" /v AutoOpenMainWindowWhenStartup /t REG_DWORD /d 0 /f
+#for reference, I've included the LyncUserSettings.cmd file as a springboard in this gist 
 
-##function to assist finding uninstall strings, msi codes, display names of installed applications
-#usage: 'Get-Uninstaller chrome'
+
+## function to assist finding uninstall strings, msi codes, display names of installed applications
+# paste into powershell window (or save in (powershell profile)[http://www.howtogeek.com/50236/customizing-your-powershell-profile/]
+# usage once loaded: 'Get-Uninstaller chrome'
 function Get-Uninstaller {
   [CmdletBinding()]
   param(
@@ -149,4 +165,4 @@ function Get-Uninstaller {
  
   Get-ItemProperty -Path $keys -ErrorAction 'SilentlyContinue' | ?{ ($_.DisplayName -like "*$Name*") -or ($_.PsChildName -like "*$Name*") } | Select-Object PsPath,DisplayVersion,DisplayName,UninstallString,InstallSource,QuietUninstallString
 }
-
+## end of function
