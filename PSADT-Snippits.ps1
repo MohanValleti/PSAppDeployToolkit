@@ -1,3 +1,13 @@
+## Commonly used PSADT env variables
+$envCommonDesktop   # C:\Users\Public\Desktop
+$envCommonPrograms  # C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+$envProgramFiles    # C:\Program Files
+$envProgramFilesX86 # C:\Program Files (x86)
+$envProgramData     # c:\ProgramData
+$envUserDesktop     # c:\Users\{user currently logged in}\Desktop
+$envSystemDrive     # c:
+$envSystemRoot      # c:\windows
+
 ## *** Examples of exe install***
 Execute-Process -Path '<application>.exe' -Parameters '/quiet' -WindowStyle Hidden
 Execute-Process -Path "$dirFiles\DirectX\DXSetup.exe" -Parameters '/silent' -WindowStyle 'Hidden'
@@ -61,10 +71,18 @@ Copy-Item -Path "$dirFiles\client_1" -Destination "C:\oracle\product\11.2.0\clie
 Remove-File -Path '$envCommonDesktop\GeoGraphix Seismic Modeling.lnk'
 
 ## Remove a bunch of specific files
+"$envCommonDesktop\Example 1.lnk", <# Example #>`
+"$envCommonDesktop\Example 2.lnk", <# Example #>`
+"$envCommonDesktop\Example 3.lnk" <# Careful with the last item to not include a comma after the double quote #>`
+| % { Remove-File -Path "$_" }
 
-
-## Remove a bunch of specific folders
-
+## Remove a bunch of specific folders and their contents
+"$envSystemDrive\Example Dir1",  <# Example #>`
+"$envProgramFiles\Example Dir2",  <# Example #>`
+"$envProgramFiles\Example Dir3",  <# Example #>`
+"$envProgramFilesX86\Example Dir4",  <# Example #>`
+"$envSystemRoot\Example4" <# Careful with the last item to not include a comma after the double quote #>``
+| % { Remove-Folder -Path "$_" }
 
 ## Remove a bunch of specific folders, only if they're empty
 # If you re-use this snippit, you'll need to put the folders into the below list
@@ -131,12 +149,4 @@ function Get-Uninstaller {
  
   Get-ItemProperty -Path $keys -ErrorAction 'SilentlyContinue' | ?{ ($_.DisplayName -like "*$Name*") -or ($_.PsChildName -like "*$Name*") } | Select-Object PsPath,DisplayVersion,DisplayName,UninstallString,InstallSource,QuietUninstallString
 }
-
-## Commonly used PSADT env variables
-$envCommonDesktop   # C:\Users\Public\Desktop
-$envCommonPrograms  # C:\ProgramData\Microsoft\Windows\Start Menu\Programs
-$envProgramFiles    # C:\Program Files
-$envProgramFilesX86 # C:\Program Files (x86)
-$envProgramData     # c:\ProgramData
-$envUserDesktop     # c:\Users\{user currently logged in}\Desktop
 
