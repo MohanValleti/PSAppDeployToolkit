@@ -13,8 +13,10 @@ cd "$path_to_PSADT_folder_youre_working_from"
 . .\AppDeployToolkit\AppDeployToolkitMain.ps1
 
 ## *** Examples of exe install***
-Execute-Process -Path '<application>.exe' -Parameters '/quiet' -WindowStyle Hidden
+Execute-Process -Path '<application>.exe' -Parameters '/quiet' -WindowStyle 'Hidden'
 Execute-Process -Path "$dirFiles\DirectX\DXSetup.exe" -Parameters '/silent' -WindowStyle 'Hidden'
+#open notepad, don't wait for it to close before proceeding (i.e. continue with script)
+Execute-Process -Path "$envSystemRoot\notepad.exe" -NoWait 
 #Execute an .exe, and hide confidential parameters from log file
 $serialisation_params = '-batchmode -quit -serial <aa-bb-cc-dd-ee-ffff11111> -username "<serialisation username>" -password "SuperSecret123"'
 Execute-Process -Path "$envProgramFiles\Application\Serialise.exe" -Parameters "$serialisation_params" -SecureParameters:$True
