@@ -1,12 +1,13 @@
 ## Commonly used PSADT env variables
-$envCommonDesktop   # C:\Users\Public\Desktop
-$envCommonPrograms  # C:\ProgramData\Microsoft\Windows\Start Menu\Programs
-$envProgramFiles    # C:\Program Files
-$envProgramFilesX86 # C:\Program Files (x86)
-$envProgramData     # c:\ProgramData
-$envUserDesktop     # c:\Users\{user currently logged in}\Desktop
-$envSystemDrive     # c:
-$envSystemRoot      # c:\windows
+$envCommonDesktop           # C:\Users\Public\Desktop
+$envCommonPrograms          # C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+$envProgramFiles            # C:\Program Files
+$envProgramFilesX86         # C:\Program Files (x86)
+$envProgramData             # c:\ProgramData
+$envUserDesktop             # c:\Users\{user currently logged in}\Desktop
+$envUserStartMenuPrograms   # c:\Users\{user currently logged in}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
+$envSystemDrive             # c:
+$envSystemRoot              # c:\windows
 
 ## How to load ("dotsource") PSADT functions/variables for manual testing (your powershell window must be run as administrator first)
 cd "$path_to_PSADT_folder_youre_working_from"
