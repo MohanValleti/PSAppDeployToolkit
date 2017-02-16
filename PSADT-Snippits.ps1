@@ -113,6 +113,18 @@ if for example v11 was also installed, it would stop prior #>
 Execute-Process -Path "certutil.exe" -Parameters "-f -addstore -enterprise TrustedPublisher `"$dirFiles\certname.cer`""
 Write-Log -Message "Imported Cert" -Source $deployAppScriptFriendlyName	
 
+## While loop pause (incase app installer exits immediately)
+#pause until example reg key
+While(!(test-path -path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{product-code-hereD}")) {
+                sleep 5;
+                Write-Log -Message "$appVendor - $appName - $appVersion is still not finished installing, sleeping another 5" -Source $deployAppScriptFriendlyName;
+}
+#pause until example file
+While(!(test-path -path "$envCommonDesktop\Example Shortcut.lnk")) {
+                sleep 5;
+                Write-Log -Message "$appVendor - $appName - $appVersion is still not finished installing, sleeping another 5" -Source $deployAppScriptFriendlyName;
+}
+
 ##***To Create a shortcut***
 New-Shortcut -Path "$envCommonPrograms\My Shortcut.lnk" `
     -TargetPath "$envWinDir\system32\notepad.exe" `
