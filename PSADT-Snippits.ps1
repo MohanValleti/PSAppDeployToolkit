@@ -58,7 +58,10 @@ Set-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\LMKR\Licensing' -Name 'LMKR_LI
 }
 Invoke-HKCURegistrySettingsForAllUsers -RegistrySettings $HKCURegistrySettings
 
-## To sleep
+#import a .reg key, useful if there's a butt-tonne of nested keys/etc
+Execute-Process -FilePath "reg.exe" -Parameters "IMPORT `"$dirFiles\name-of-reg-export.reg`"" -PassThru
+
+## To pause script for <x> time
 Start-Sleep -Seconds 120
 
 ## ***To copy and overwrite a file***
