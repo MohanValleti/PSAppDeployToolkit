@@ -7,7 +7,7 @@ $envProgramData             # c:\ProgramData
 $envUserDesktop             # c:\Users\{user currently logged in}\Desktop
 $envUserStartMenuPrograms   # c:\Users\{user currently logged in}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
 $envSystemDrive             # c:
-$envSystemRoot              # c:\windows
+$envWinDir                  # c:\windows
 
 ## How to load ("dotsource") PSADT functions/variables for manual testing (your powershell window must be run as administrator first)
 cd "$path_to_PSADT_folder_youre_working_from"
