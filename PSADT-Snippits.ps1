@@ -117,13 +117,10 @@ Execute-Process -Path "certutil.exe" -Parameters "-f -addstore -enterprise Trust
 Write-Log -Message "Imported Cert" -Source $deployAppScriptFriendlyName
 
 ## Import a driver (note, >= win7 must be signed, and cert must be in trusted publishers store) 
-Execute-Process -Path 'PnPutil.exe' -Parameters "/a $dirFiles\USB Drivers\driver.inf"
+Execute-Process -Path 'PnPutil.exe' -Parameters "/a `"$dirFiles\USB Drivers\driver.inf`""
 
 ## Register a DLL module
 Execute-Process -FilePath "regsvr32.exe" -Parameters "/s `"$dirFiles\example\codec.dll`""
-
-
-
 
 
 ## While loop pause (incase app installer exits immediately)
