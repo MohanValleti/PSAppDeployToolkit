@@ -111,10 +111,20 @@ if for example v11 was also installed, it would stop prior #>
 ) | % { if (!(Test-Path -Path "$_\*")) { Remove-Folder -Path "$_" } }
     # for each piped item, if the folder specified DOES NOT have contents ($folder\*), remove the folder 
 
-## Import a certificate to system 'Trusted Publishers' store.. helpful for clickOnce installers 
+## Import a certificate to system 'Trusted Publishers' store.. helpful for clickOnce installers & importing drivers
 # (for references sake, I saved as base64, unsure if DER encoded certs work)
 Execute-Process -Path "certutil.exe" -Parameters "-f -addstore -enterprise TrustedPublisher `"$dirFiles\certname.cer`""
-Write-Log -Message "Imported Cert" -Source $deployAppScriptFriendlyName	
+Write-Log -Message "Imported Cert" -Source $deployAppScriptFriendlyName
+
+## Import a driver (note, >= win7 must be signed, and cert must be in trusted publishers store) 
+Execute-Process -Path 'PnPutil.exe' -Parameters "/a $dirFiles\USB Drivers\driver.inf"
+
+## Register a DLL module
+Execute-Process -FilePath "regsvr32.exe" -Parameters "/s `"$dirFiles\example\codec.dll`""
+
+
+
+
 
 ## While loop pause (incase app installer exits immediately)
 #pause until example reg key
