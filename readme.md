@@ -12,4 +12,4 @@ As opposed to:
 
     <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
 
-See example in this repo, or read more (here)[http://www.samlogic.net/articles/manifest.htm] or (here)[https://msdn.microsoft.com/en-us/library/aa374191(v=vs.85).aspx]
+See example in this repo, or read more [here](http://www.samlogic.net/articles/manifest.htm) or [here](https://msdn.microsoft.com/en-us/library/aa374191(v=vs.85).aspx)
