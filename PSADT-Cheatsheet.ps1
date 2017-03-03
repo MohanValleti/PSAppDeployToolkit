@@ -160,6 +160,17 @@ Set-Acl "$acl_to_modify" $acl
 
 #TODO
 
+## Add to environment variables (specifically PATH in this case)
+# The first input in the .NET code can have Path subtituted for any other environemnt variable name (gci env: to see what is presently set)
+$path_addition = "C:\bin"
+#add $path_addition to permanent system wide path
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $path_addition, "Machine")
+#add $path_addition to permanent user specific path
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $path_addition, "User")
+#add $path_addition to the process level path only (i.e. when you quit script, it will no longer be applied)
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $path_addition, "Process")
+
+
 ##Create Active Setup to Update User Settings
 #1
 Copy-File -Path "$dirFiles\Example.exe" -Destination "$envProgramData\Example"
