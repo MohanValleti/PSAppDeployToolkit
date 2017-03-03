@@ -47,7 +47,12 @@ Execute-MSI -Action Uninstall -Path '{5708517C-59A3-45C6-9727-6C06C8595AFD}'
 Execute-Process -Path "cscript.exe" -Parameters "$dirFiles\whatever.vbs"
 
 ##***Remove registry key***
-Remove-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Macromedia\FlashPlayer\SafeVersions' -Recurse -ContinueOnError:$True
+#I dont know the right term, but these are to delete the whole 'folder' reg key
+Remove-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Macromedia\FlashPlayer\SafeVersions' -Recurse
+Remove-RegistryKey -Key 'HKLM:SOFTWARE\Macromedia\FlashPlayer\SafeVersions' -Recurse
+#This is to remove a specific reg key item from within a 'folder'
+Remove-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'RunAppInstall'
+Remove-RegistryKey -Key 'HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'RunAppInstall'
 
 ## ***Create a reg key***
 Set-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\LMKR\Licensing' -Name 'LMKR_LICENSE_FILE' -Value '@license'-Type String -ContinueOnError:$True
