@@ -66,6 +66,9 @@ Invoke-HKCURegistrySettingsForAllUsers -RegistrySettings $HKCURegistrySettings
 #import a .reg key, useful if there's a butt-tonne of nested keys/etc
 Execute-Process -FilePath "reg.exe" -Parameters "IMPORT `"$dirFiles\name-of-reg-export.reg`"" -PassThru
 
+#example 2 of importing a reg key, unsure if there's pros/cons to either approach. i've used above more than below.
+Execute-Process -Path "$envSystemRoot\regedit.exe" -Parameters "/s `"$dirFiles\geedee_all.reg`""
+
 ## To pause script for <x> time
 Start-Sleep -Seconds 120
 
@@ -76,7 +79,8 @@ Copy-File -Path "$dirSupportFiles\mms.cfg" -Destination "C:\Windows\SysWOW64\Mac
 Copy-File -Path "$dirSupportFiles\mms.cfg" -Destination "C:\Windows\SysWOW64\Macromed\Flash\"
 
 ## ***To copy a folder***
-Copy-Item -Path "$dirFiles\client_1" -Destination "C:\oracle\product\11.2.0\client_1" -Recurse
+#pls note the destination should be the PARENT folder, not the folder name you want it to be. for example, you'd copy "mozilla firefox" to "c:\program files", if you were wanting to copy the application files.
+Copy-File -Path "$dirFiles\client_1" -Destination "C:\oracle\product\11.2.0\" -Recurse
 
 ## ***To delete a file or shortcut***
 Remove-File -Path '$envCommonDesktop\GeoGraphix Seismic Modeling.lnk'
