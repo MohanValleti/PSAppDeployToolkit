@@ -79,7 +79,9 @@ Copy-File -Path "$dirSupportFiles\mms.cfg" -Destination "C:\Windows\SysWOW64\Mac
 Copy-File -Path "$dirSupportFiles\mms.cfg" -Destination "C:\Windows\SysWOW64\Macromed\Flash\"
 
 ## ***To copy a folder***
-#pls note the destination should be the PARENT folder, not the folder name you want it to be. for example, you'd copy "mozilla firefox" to "c:\program files", if you were wanting to copy the application files.
+# pls note the destination should be the PARENT folder, not the folder name you want it to be. 
+# for example, you'd copy "mozilla firefox" to "c:\program files", if you were wanting to copy the application files.
+# if copying to root of c:, include trailing slash - i.e. "$envSystemDrive\" not "$envSystemDrive" or "c:"
 Copy-File -Path "$dirFiles\client_1" -Destination "C:\oracle\product\11.2.0\" -Recurse
 
 ## ***To delete a file or shortcut***
