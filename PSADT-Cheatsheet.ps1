@@ -14,7 +14,7 @@ cd "$path_to_PSADT_folder_youre_working_from"
 . .\AppDeployToolkit\AppDeployToolkitMain.ps1
 
 ## *** Examples of exe install***
-Execute-Process -Path '<application>.exe' -Parameters '/quiet' -WindowStyle 'Hidden'
+Execute-Process -Path '<application>.exe' -Parameters '/quiet' -WaitForMsiExec:$true
 Execute-Process -Path "$dirFiles\DirectX\DXSetup.exe" -Parameters '/silent' -WindowStyle 'Hidden'
 #open notepad, don't wait for it to close before proceeding (i.e. continue with script)
 Execute-Process -Path "$envSystemRoot\notepad.exe" -NoWait 
