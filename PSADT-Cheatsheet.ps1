@@ -163,8 +163,11 @@ $acl.SetAccessRule($ar)
 Set-Acl "$acl_to_modify" $acl
 
 ## Modify ACL on a folder
-
-#TODO
+$folder_to_change = "$envSystemDrive\Example_Folder"
+$acl = Get-Acl "$folder_to_change"
+$ar = New-Object System.Security.AccessControl.FileSystemAccessRule("BUILTIN\Users", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
+$acl.SetAccessRule($ar)
+Set-Acl "$folder_to_change" $acl  
 
 ## Add to environment variables (specifically PATH in this case)
 # The first input in the .NET code can have Path subtituted for any other environemnt variable name (gci env: to see what is presently set)
