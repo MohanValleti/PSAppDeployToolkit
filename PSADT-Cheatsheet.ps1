@@ -180,6 +180,16 @@ $path_addition = "C:\bin"
 [Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $path_addition, "Process")
 
 
+#.NET 4.x comparison/install
+$version_we_require = [version]"4.5.2"
+$version_we_want_path = "$dirFiles\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+$install_params = "/q /norestart"
+if((Get-RegistryKey "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" -Value Version) -lt $version_we_require) {
+    Write-Log -Source $deployAppScriptFriendlyName -Message ".NET version is < [string]$version_we_require, installing"
+    Execute-Process -Path "$version_we_want_path" -Parameters "$install_params" -WaitForMSIExec:$true
+}
+
+
 ##Create Active Setup to Update User Settings
 #1
 Copy-File -Path "$dirFiles\Example.exe" -Destination "$envProgramData\Example"
