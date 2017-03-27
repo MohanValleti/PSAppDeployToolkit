@@ -48,6 +48,7 @@ Execute-Process -Path "cscript.exe" -Parameters "$dirFiles\whatever.vbs"
 
 
 ## Copy something to all user profiles
+#grabbed from here: http://psappdeploytoolkit.com/forums/topic/copy-file-to-all-users-currently-logged-in-and-for-all-future-users/
 $ProfilePaths = Get-UserProfiles | Select-Object -ExpandProperty 'ProfilePath'
 ForEach ($Profile in $ProfilePaths) {
     Copy-File -Path "$dirFiles\Example\example.ini" -Destination "$Profile\Example\To\Path\"
