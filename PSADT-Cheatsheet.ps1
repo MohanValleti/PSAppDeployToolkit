@@ -46,6 +46,13 @@ Execute-MSI -Action Uninstall -Path '{5708517C-59A3-45C6-9727-6C06C8595AFD}'
 ## ***Run a vbscript***
 Execute-Process -Path "cscript.exe" -Parameters "$dirFiles\whatever.vbs"
 
+
+## Copy something to all user profiles
+$ProfilePaths = Get-UserProfiles | Select-Object -ExpandProperty 'ProfilePath'
+ForEach ($Profile in $ProfilePaths) {
+    Copy-File -Path "$dirFiles\Example\example.ini" -Destination "$Profile\Example\To\Path\"
+}
+
 ##***Remove registry key***
 #I dont know the right term, but these are to delete the whole 'folder' reg key
 Remove-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Macromedia\FlashPlayer\SafeVersions' -Recurse
