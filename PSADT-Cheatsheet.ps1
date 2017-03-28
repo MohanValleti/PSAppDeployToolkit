@@ -23,7 +23,7 @@ $serialisation_params = '-batchmode -quit -serial <aa-bb-cc-dd-ee-ffff11111> -us
 Execute-Process -Path "$envProgramFiles\Application\Serialise.exe" -Parameters "$serialisation_params" -SecureParameters:$True
 
 ##***Example to install an msi***
-Execute-MSI -Action 'Install' -Path '$dirFiles\<application>.msi'
+Execute-MSI -Action 'Install' -Path '$dirFiles\<application>.msi' -Parameters 'REBOOT=ReallySuppress /QN'
 Execute-MSI -Action 'Install' -Path 'Discovery 2015.1.msi'
 #MSI install + transform file
 Execute-MSI -Action 'Install' -Path 'Adobe_Reader_11.0.0_EN.msi' -Transform 'Adobe_Reader_11.0.0_EN_01.mst'
