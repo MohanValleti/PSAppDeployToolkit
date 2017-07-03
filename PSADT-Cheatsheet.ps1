@@ -140,6 +140,11 @@ Execute-Process -Path 'PnPutil.exe' -Parameters "/a `"$dirFiles\USB Drivers\driv
 ## Register a DLL module
 Execute-Process -FilePath "regsvr32.exe" -Parameters "/s `"$dirFiles\example\codec.dll`""
 
+## Make an install marker reg key for custom detections
+#for e.g. below would create something like:
+#HKLM:\SOFTWARE\PSAppDeployToolkit\InstallMarkers\Microsoft_KB2921916_1.0_x64_EN_01
+Set-RegistryKey -Key "$configToolkitRegPath\$appDeployToolkitName\InstallMarkers\$installName"
+
 
 ## While loop pause (incase app installer exits immediately)
 #pause until example reg key
