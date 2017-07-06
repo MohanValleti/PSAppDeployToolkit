@@ -93,7 +93,7 @@ Copy-File -Path "$dirSupportFiles\mms.cfg" -Destination "C:\Windows\SysWOW64\Mac
 Copy-File -Path "$dirFiles\client_1" -Destination "C:\oracle\product\11.2.0\" -Recurse
 
 ## ***To delete a file or shortcut***
-Remove-File -Path '$envCommonDesktop\GeoGraphix Seismic Modeling.lnk'
+Remove-File -Path "$envCommonDesktop\GeoGraphix Seismic Modeling.lnk"
 
 ## Remove a bunch of specific files
 "$envCommonDesktop\Example 1.lnk", <# Example #>`
