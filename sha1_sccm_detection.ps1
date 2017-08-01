@@ -19,6 +19,6 @@ function Get-Checksum
     $hash
 }
 
-if (test-path -PathType Leaf -$file_to_checksum) { $current_checksum = get-checksum -file $file_to_checksum -Algorithm $Algorithm }
+if (test-path -PathType Leaf $file_to_checksum) { $current_checksum = get-checksum -file $file_to_checksum }
 
 if ($expected_checksum -eq $current_checksum) { Write-Host "Installed" }
