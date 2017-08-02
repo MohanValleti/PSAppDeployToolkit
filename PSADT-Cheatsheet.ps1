@@ -202,6 +202,11 @@ if((Get-RegistryKey "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" -
     Execute-Process -Path "$version_we_want_path" -Parameters "$install_params" -WaitForMSIExec:$true
 }
 
+#exit codes for reboot required
+#soft reboot <- will not 'force' restart, and sccm will progress past, but will nag to restart afterward
+Exit-Script -ExitCode 3010
+#hard reboot <- does not 'force' restart, but sccm won't proceed past any pre-reqs without reboot
+Exit-Script -ExitCode 1641
 
 ##Create Active Setup to Update User Settings
 #1
