@@ -67,7 +67,9 @@ Set-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\LMKR\Licensing' -Name 'LMKR_LI
 
 ## ***To set an HKCU key for all users including default profile***
 [scriptblock]$HKCURegistrySettings = {
-    Set-RegistryKey -Key 'HKEY_CURRENT_USER\SOFTWARE\Classes\AppX4hxtad77fbk3jkkeerkrm0ze94wjf3s9' -Name 'NoOpenWith' -Value '""'-Type String -ContinueOnError:$True
+    # I included both to illustrate that HKCU\ is an acceptable abbreviation
+    Set-RegistryKey -Key 'HKEY_CURRENT_USER\SOFTWARE\Classes\AppX4hxtad77fbk3jkkeerkrm0ze94wjf3s9' -Name 'NoOpenWith' -Value '""'-Type String -ContinueOnError:$True -SID $UserProfile.SID
+    Set-RegistryKey -Key 'HKCU\Software\Microsoft\Office\14.0\Common' -Name 'qmenable' -Value 0 -Type DWord -SID $UserProfile.SID
 }
 Invoke-HKCURegistrySettingsForAllUsers -RegistrySettings $HKCURegistrySettings
 
