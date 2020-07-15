@@ -47,7 +47,7 @@ Execute-MSI -Action Uninstall -Path '{5708517C-59A3-45C6-9727-6C06C8595AFD}'
 Execute-Process -Path "cscript.exe" -Parameters "$dirFiles\whatever.vbs"
 
 
-## Copy something to all user profiles
+## Copy a file to the correct relative location for all user accounts
 #grabbed from here: http://psappdeploytoolkit.com/forums/topic/copy-file-to-all-users-currently-logged-in-and-for-all-future-users/
 $ProfilePaths = Get-UserProfiles | Select-Object -ExpandProperty 'ProfilePath'
 ForEach ($Profile in $ProfilePaths) {
@@ -207,12 +207,32 @@ Exit-Script -ExitCode 3010
 #hard reboot <- does not 'force' restart, but sccm won't proceed past any pre-reqs without reboot
 Exit-Script -ExitCode 1641
 
-##Create Active Setup to Update User Settings
-#1
+##Create Active Setup to run once per user, and run an arbitrary executable as the user
+# *WARNING* this really isn't a recommended method for a number of reasons.
+# 1. You must logoff a logged in user for them to run this
+# 2. Activesetup is not syncronous and will hold up the user login process until the command completes
+# If the executable requests user input you can prevent logins
+# 3. It's slow
+# You're better off using a scheduled task, or capturing what the executable does and doing it another way
+
 Copy-File -Path "$dirFiles\Example.exe" -Destination "$envProgramData\Example"
 Set-ActiveSetup -StubExePath "$envProgramData\Example\Example.exe" `
     -Description 'AutoDesk BIM Glue install' `
     -Key 'Autodesk_BIM_Glue_Install' `
+    -ContinueOnError:$true
+
+## Create an activesetup to run once per user, to import a .reg file
+# *WARNING* this really isn't a recommended method for a number of reasons.
+# 1. You must logoff a logged in user for them to run this
+# 2. Activesetup is not syncronous and will hold up the user login process until the command completes
+# If the executable requests user input you can prevent logins
+# 3. It's slow
+# You're better off using a scheduled task, or capturing what the executable does and doing it another way
+
+Copy-File -Path "$dirFiles\many_registry_keys_for_app_x.reg" -Destination "$envProgramData\Hidden\Path"
+Set-ActiveSetup -StubExePath "reg.exe IMPORT `"$envProgramData\Hidden\Path\many_registry_keys_for_app_x.reg`"" `
+    -Description 'My undesirable way of applying registry keys' `
+    -Key 'Undesirable_Reg_keys' `
     -ContinueOnError:$true
 
 ## function to assist finding uninstall strings, msi codes, display names of installed applications
