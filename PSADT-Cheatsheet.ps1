@@ -76,9 +76,6 @@ Invoke-HKCURegistrySettingsForAllUsers -RegistrySettings $HKCURegistrySettings
 #import a .reg key, useful if there's a butt-tonne of nested keys/etc
 Execute-Process -FilePath "reg.exe" -Parameters "IMPORT `"$dirFiles\name-of-reg-export.reg`"" -PassThru
 
-#example 2 of importing a reg key, unsure if there's pros/cons to either approach. i've used above more than below.
-Execute-Process -Path "$envSystemRoot\regedit.exe" -Parameters "/s `"$dirFiles\geedee_all.reg`""
-
 ## To pause script for <x> time
 Start-Sleep -Seconds 120
 
