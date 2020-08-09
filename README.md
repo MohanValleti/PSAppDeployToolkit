@@ -4,8 +4,6 @@ Feel free to offer suggestions, if code I've provided no longer works, doesn't w
 
 I've also stole a few [from here to get started](http://www.scriptersinc.com/psadt-quick-reference-functions-list/), I've populated a bunch I use regularly.
 
-Be careful with the scripters inc link above^^ however, all of the quotes are funky UTF-8 and I had issues copy pasting (all the quotes in this gist have been checked).
-
 Also, additional note that isn't strictly related to PSADT, but is helpful in deployment matters.. I've included an z_Example_App.exe.manifest file. From what I can see, when you come across a legacy app that requests administrator privilege on launch (but does not have 'run as administrator' checked in it's properties, you can overrule this behaviour by creating .exe.manifest file (named in accordance with the .exe's file name, e.g. notepad.exe.manifest), with the following within the file:
 
     <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
