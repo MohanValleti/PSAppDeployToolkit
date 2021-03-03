@@ -1,6 +1,6 @@
 ## Commonly used PSADT env variables
 $envCommonDesktop           # C:\Users\Public\Desktop
-$envCommonPrograms          # C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+$envCommonStartMenuPrograms # C:\ProgramData\Microsoft\Windows\Start Menu\Programs
 $envProgramFiles            # C:\Program Files
 $envProgramFilesX86         # C:\Program Files (x86)
 $envProgramData             # c:\ProgramData
