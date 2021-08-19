@@ -158,7 +158,7 @@ While(!(test-path -path "$envCommonDesktop\Example Shortcut.lnk")) {
 }
 
 ##***To Create a shortcut***
-New-Shortcut -Path "$envCommonPrograms\My Shortcut.lnk" `
+New-Shortcut -Path "$envCommonStartMenuPrograms\My Shortcut.lnk" `
     -TargetPath "$envWinDir\system32\notepad.exe" `
     -Arguments "--example-argument --example-argument-two" `
     -Description 'Notepad' `
